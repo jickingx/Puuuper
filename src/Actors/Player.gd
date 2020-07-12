@@ -1,9 +1,5 @@
 extends KinematicBody2D
 
-const TILE_SIZE = 64
-const TARGET_MAX_X = 1024 - 64
-const TARGET_MAX_Y = 600 - 64
-
 export (int) var speed = 200
 
 var target:= Vector2.ZERO
@@ -18,8 +14,8 @@ func _physics_process(delta):
 	if target == Vector2.ZERO:
 		return
 	
-	target.x = clamp(target.x, TILE_SIZE , TARGET_MAX_X)
-	target.y = clamp(target.y, TILE_SIZE , TARGET_MAX_Y)
+	target.x = clamp(target.x, Global.TILE_SIZE, Global.screen_width - Global.TILE_SIZE)
+	target.y = clamp(target.y, Global.TILE_SIZE, Global.screen_height - Global.TILE_SIZE)
 	
 	velocity = position.direction_to(target) * speed
 	# look_at(target)

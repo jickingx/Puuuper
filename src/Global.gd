@@ -3,8 +3,11 @@ extends Node
 const ScreenOverlay: PackedScene = preload("res://src/FX/ScreenOverlay.tscn")
 const MAIN_GAME_SCENE := "res://src/Game.tscn"
 const FADE_DELAY = .6
+const TILE_SIZE = 64
 
 var current_scene_path:= ""
+var screen_height: int
+var screen_width: int
 
 onready var root = get_tree().get_root()
 onready var current_scene = root.get_child(root.get_child_count() - 1)
@@ -12,6 +15,8 @@ onready var current_scene = root.get_child(root.get_child_count() - 1)
 
 func _ready():
 	setup_fade_transition()
+	screen_height = current_scene.get_viewport().size.y
+	screen_width = current_scene.get_viewport().size.x
 
 
 func restart_scene():

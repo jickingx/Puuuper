@@ -1,10 +1,10 @@
 extends Area2D
 
+signal picked
+
 
 func _ready():
 	$AnimationPlayer.play("default")
-
-
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
@@ -17,3 +17,4 @@ func _on_Coin_body_entered(body):
 		$CollisionShape2D.queue_free()
 		$AudioStreamPlayer2D.play()
 		$AnimationPlayer.play("picked")
+		emit_signal("picked")

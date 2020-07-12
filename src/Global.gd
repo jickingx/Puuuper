@@ -6,18 +6,23 @@ const FADE_DELAY = .6
 const TILE_SIZE = 64
 
 var current_scene_path:= ""
-var screen_height: int
-var screen_width: int
+#safe
+var screen_safe_min_xy: int
+var screen_safe_max_y: int
+var screen_safe_max_x: int
 var score_hi:= 10
+var rng := RandomNumberGenerator.new()
 
-onready var root = get_tree().get_root()
-onready var current_scene = root.get_child(root.get_child_count() - 1)
+onready var current_scene = get_tree().get_root().get_child(
+	get_tree().get_root().get_child_count() - 1)
 
 
 func _ready():
 	setup_fade_transition()
-	screen_height = current_scene.get_viewport().size.y
-	screen_width = current_scene.get_viewport().size.x
+	screen_safe_min_xy = TILE_SIZE + (TILE_SIZE / 2)
+	screen_safe_max_y = current_scene.get_viewport().size.y - (TILE_SIZE + (TILE_SIZE/2))
+	screen_safe_max_x = current_scene.get_viewport().size.x - (TILE_SIZE + (TILE_SIZE/2))
+	rng.randomize()
 
 
 func restart_scene():
@@ -60,3 +65,34 @@ func fade_out_transition() -> void:
 	var so = current_scene.get_node_or_null("ScreenOverlay")
 	if so != null :
 		so.fade_out()
+
+
+#Get Game world values =============================================================
+#returns a screen safe random pos
+func get_random_position() -> Vector2:
+	var v:= Vector2.ZERO
+	var r_x = rng.randf_range(Global.screen_safe_min_xy, Global.screen_safe_max_x)
+	var r_y = rng.randf_range(Global.screen_safe_min_xy, Global.screen_safe_max_y)
+	v.x = get_grid_safe_val(r_x)
+	v.y = get_grid_safe_val(r_y)
+	return v
+
+
+func get_grid_safe_val(val:int) -> int:
+	#round to nearest 64
+	var x = (val % TILE_SIZE)
+	x = (val - x) / TILE_SIZE
+	x *= TILE_SIZE
+	x += TILE_SIZE/2
+	return x
+
+
+func get_grid_safe_pos(pos: Vector2) -> Vector2:
+	var p = Vector2.ZERO
+	p.x = get_grid_safe_val(clamp(pos.x, Global.screen_safe_min_xy, Global.screen_safe_max_x))
+	p.y = get_grid_safe_val(clamp(pos.y, Global.screen_safe_min_xy, Global.screen_safe_max_y))
+	return pos
+
+
+
+

@@ -23,10 +23,9 @@ func _physics_process(delta):
 		return
 	if target == Vector2.ZERO:
 		return
-	target.x = clamp(target.x, Global.TILE_SIZE, Global.screen_width - Global.TILE_SIZE)
-	target.y = clamp(target.y, Global.TILE_SIZE, Global.screen_height - Global.TILE_SIZE)	
 	velocity = position.direction_to(target) * speed
 	if position.distance_to(target) > 5:
 		velocity = move_and_slide(velocity)
+
 
 

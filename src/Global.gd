@@ -1,6 +1,6 @@
 extends Node
 
-const ScreenOverlay: PackedScene = preload("res://src/FX/ScreenOverlay.tscn")
+const ScreenOverlay:= preload("res://src/FX/ScreenOverlay.tscn")
 const MAIN_GAME_SCENE := "res://src/Game.tscn"
 const FADE_DELAY = .6
 const TILE_SIZE = 64

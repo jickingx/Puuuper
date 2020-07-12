@@ -1,13 +1,13 @@
 extends Node2D
 
-const Coin = preload("res://src/Objects/Coin.tscn")
-const GameOver = preload("res://src/UI/Screens/GameOver.tscn")
+const Coin := preload("res://src/Objects/Coin.tscn")
+const GameOver := preload("res://src/UI/Screens/GameOver.tscn")
 const COIN_COUNT_MAX = 8
 
 var rng := RandomNumberGenerator.new()
 var coin_counter := 0
 var score:= 0
-var timer:= 20
+var timer:= 10
 
 
 func _ready():
@@ -26,7 +26,7 @@ func spawn_coin():
 		Global.TILE_SIZE, Global.screen_width,
 		Global.screen_width)
 	c.connect("picked", self, "_on_Coin_picked")
-	Global.add_child(c)
+	Global.current_scene.add_child(c)
 
 
 func get_random_position(
@@ -40,7 +40,7 @@ func get_random_position(
 	return v
 
 
-func game_over():	
+func game_over():
 	$TimerGame.stop()
 	$TimerCoinSpawner.stop()
 	$AudioGameOver.play()

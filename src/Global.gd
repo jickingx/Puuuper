@@ -8,6 +8,7 @@ const TILE_SIZE = 64
 var current_scene_path:= ""
 var screen_height: int
 var screen_width: int
+var score_hi:= 10
 
 onready var root = get_tree().get_root()
 onready var current_scene = root.get_child(root.get_child_count() - 1)
@@ -21,8 +22,8 @@ func _ready():
 
 func restart_scene():
 	fade_out_transition()
-	yield(get_tree().create_timer(FADE_DELAY), "timeout")
 	switch_scene(current_scene_path)
+	yield(get_tree().create_timer(FADE_DELAY), "timeout")
 
 
 func switch_scene(path: String):

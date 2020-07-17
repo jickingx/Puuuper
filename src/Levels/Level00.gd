@@ -1,25 +1,51 @@
 extends Node2D
 
 const Coin := preload("res://src/Objects/Coin.tscn")
+const ObjectDetector := preload("res://src/Objects/ObjectDetector.tscn")
 const GameOver := preload("res://src/UI/Screens/GameOver.tscn")
 const COIN_COUNT_MAX = 8
 
 var coin_counter := 0
 var score:= 0
-var timer:= 10
+var game_timer:= 30
 
 
 func _ready():
-	$Hud.set_timer(timer)
+	setup()
+ 
+
+func setup():
+	$Hud.set_timer(game_timer)
 	$Hud.set_score_hi(Global.score_hi)
 	yield(get_tree().create_timer(.4), "timeout")
 	$TimerCoinSpawner.start()
 	$TimerGame.start()
+	
+	#debug screen_safe_max_x
+	var debug = "min_xy: %s max_x: %s max_y: %s "
+	$Debug/Label.text = debug % [Global.screen_safe_min_xy,
+		Global.screen_safe_max_x,
+		Global.screen_safe_max_y]
 
 
-func spawn_coin():
+func spawn_valid_coin():
+	var can_spawn_coin := false
+	while not can_spawn_coin:
+		var new_pos = Global.get_random_position()
+		var o = ObjectDetector.instance()
+		o.position = new_pos
+		Global.current_scene.add_child(o)
+		yield(get_tree().create_timer(.1), "timeout")
+		if not o.get_has_detected():
+			spawn_coin(new_pos)
+			can_spawn_coin = true
+		o.queue_free()
+
+
+
+func spawn_coin(pos: Vector2):
 	var c= Coin.instance()
-	c.position = Global.get_random_position()
+	c.position = pos
 	c.connect("picked", self, "_on_Coin_picked")
 	Global.current_scene.add_child(c)
 
@@ -38,7 +64,7 @@ func game_over():
 
 func _on_CoinSpawnerTimer_timeout():
 	if coin_counter < COIN_COUNT_MAX:
-		spawn_coin()
+		spawn_valid_coin()
 		coin_counter += 1
 
 
@@ -50,9 +76,9 @@ func _on_Coin_picked():
 
 
 func _on_TimerGame_timeout():
-	if timer > 0:
-		timer -= 1
-		$Hud.set_timer(timer)
+	if game_timer > 0:
+		game_timer -= 1
+		$Hud.set_timer(game_timer)
 	else:
 		game_over()
 

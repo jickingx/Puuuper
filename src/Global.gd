@@ -20,8 +20,12 @@ onready var current_scene = get_tree().get_root().get_child(
 func _ready():
 	setup_fade_transition()
 	screen_safe_min_xy = TILE_SIZE + (TILE_SIZE / 2)
-	screen_safe_max_y = current_scene.get_viewport().size.y - (TILE_SIZE + (TILE_SIZE/2))
-	screen_safe_max_x = current_scene.get_viewport().size.x - (TILE_SIZE + (TILE_SIZE/2))
+	screen_safe_max_x = 1028 - (TILE_SIZE + (TILE_SIZE/2))
+	screen_safe_max_y = 576 - (TILE_SIZE + (TILE_SIZE/2))
+	
+	#Disabled due to android viewport bug
+	#screen_safe_max_y = current_scene.get_viewport().size.y - (TILE_SIZE + (TILE_SIZE/2))
+	#screen_safe_max_x = current_scene.get_viewport().size.x - (TILE_SIZE + (TILE_SIZE/2))
 	rng.randomize()
 
 

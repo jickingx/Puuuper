@@ -6,6 +6,10 @@ export(float) var scene_switch_delay := .6
 var is_scene_switching:= false
 
 func _on_Button_button_up():
+	switch_scene()
+
+
+func switch_scene():
 	if is_scene_switching:
 		return
 	

@@ -23,6 +23,7 @@ wait_time = 0.4
 stream = ExtResource( 4 )
 
 [node name="Debug" type="Node2D" parent="."]
+visible = false
 
 [node name="Label" type="Label" parent="Debug"]
 margin_top = 560.0

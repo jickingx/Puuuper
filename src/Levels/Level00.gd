@@ -38,7 +38,11 @@ func spawn_position_safe_object(type = OBJECT_TYPE.COIN ):
 		Global.current_scene.add_child(o)
 		yield(get_tree().create_timer(.1), "timeout")
 		if not o.get_has_detected():
-			spawn_coin(new_pos)
+			match type:
+				OBJECT_TYPE.HAZARD:
+					pass
+				_:
+					spawn_coin(new_pos)
 			can_spawn_coin = true
 		o.queue_free()
 

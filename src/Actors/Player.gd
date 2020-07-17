@@ -21,7 +21,8 @@ func _physics_process(delta):
 		return
 	if target == Vector2.ZERO:
 		return
-	velocity = position.direction_to(target) * speed
+	#velocity = position.direction_to(target) * speed
+	velocity = position.direction_to(target) * speed * delta * 60
 	if position.distance_to(target) > 5:
 		velocity = move_and_slide(velocity)
 

@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+const SPEED_MAX = 600
+const ACCELERATION = 64
 export (int) var speed = 200
 
 var target:= Vector2.ZERO
@@ -14,10 +16,6 @@ func _input(event):
 		target = get_global_mouse_position()
 
 
-func disable():
-	is_disabled = true
-
-
 func _physics_process(delta):
 	if is_disabled:
 		return
@@ -28,4 +26,10 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity)
 
 
+func disable():
+	is_disabled = true
 
+
+func speedup(val = 2):
+	speed += val * 2
+	speed = clamp(speed, 0 , SPEED_MAX)

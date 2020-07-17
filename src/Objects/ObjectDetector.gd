@@ -1,8 +1,5 @@
 extends Area2D
 
-signal detected_coin
-signal detected_no_coin(position)
-
 var has_detected := false
 
 
@@ -21,3 +18,5 @@ func _on_ObjectDetector_body_entered(body):
 
 func _on_ObjectDetector_area_entered(area):
 	detected_object()
+
+

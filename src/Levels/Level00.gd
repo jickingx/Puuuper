@@ -1,9 +1,10 @@
 extends Node2D
 
-const Coin := preload("res://src/Objects/Coin.tscn")
+enum OBJECT_TYPE { COIN, HAZARD }
+const Coin := preload("res://src/Objects/Pickups/Coin.tscn")
 const ObjectDetector := preload("res://src/Objects/ObjectDetector.tscn")
 const GameOver := preload("res://src/UI/Screens/GameOver.tscn")
-const COIN_COUNT_MAX = 8
+const COIN_COUNT_MAX = 7
 
 var coin_counter := 0
 var score:= 0
@@ -12,7 +13,7 @@ var game_timer:= 30
 
 func _ready():
 	setup()
- 
+
 
 func setup():
 	$Hud.set_timer(game_timer)
@@ -28,7 +29,7 @@ func setup():
 		Global.screen_safe_max_y]
 
 
-func spawn_valid_coin():
+func spawn_position_safe_object(type = OBJECT_TYPE.COIN ):
 	var can_spawn_coin := false
 	while not can_spawn_coin:
 		var new_pos = Global.get_random_position()
@@ -40,7 +41,6 @@ func spawn_valid_coin():
 			spawn_coin(new_pos)
 			can_spawn_coin = true
 		o.queue_free()
-
 
 
 func spawn_coin(pos: Vector2):
@@ -64,8 +64,10 @@ func game_over():
 
 func _on_CoinSpawnerTimer_timeout():
 	if coin_counter < COIN_COUNT_MAX:
-		spawn_valid_coin()
+		spawn_position_safe_object()
 		coin_counter += 1
+	if coin_counter == COIN_COUNT_MAX:
+		pass #spawn hazard
 
 
 func _on_Coin_picked():
@@ -73,6 +75,7 @@ func _on_Coin_picked():
 		coin_counter -= 1
 		score += 1
 		$Hud.set_score(score)
+		$Player.speedup(score)
 
 
 func _on_TimerGame_timeout():

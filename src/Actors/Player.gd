@@ -1,6 +1,8 @@
 extends KinematicBody2D
+signal died
 
-const SPEED_MAX = 600
+const ParticlesExplosion = preload("res://src/FX/Particles/Explosion.tscn")
+const SPEED_MAX = 999
 const ACCELERATION = 64
 export (int) var speed = 200
 
@@ -34,3 +36,19 @@ func disable():
 func speedup(val = 2):
 	speed += val * 2
 	speed = clamp(speed, 0 , SPEED_MAX)
+
+
+func die():
+	is_disabled = true
+	$CollisionShape2D.queue_free()
+	var ex = ParticlesExplosion.instance()
+	ex.position = self.position
+	Global.current_scene.add_child(ex)
+	ex.emitting = true
+	emit_signal("died")
+	#$AnimationPlayer.play("die")
+	#yield ($AnimationPlayer, "animation_finished")
+	$AudioStreamPlayer2D.play()
+	yield ($AudioStreamPlayer2D, "finished")
+	#queue_free()
+

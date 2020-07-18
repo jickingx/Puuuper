@@ -2,8 +2,11 @@ extends Node2D
 
 enum OBJECT_TYPE { COIN, HAZARD }
 const Coin := preload("res://src/Objects/Pickups/Coin.tscn")
+const HazardStatic := preload("res://src/Objects/Hazards/Static.tscn")
 const ObjectDetector := preload("res://src/Objects/ObjectDetector.tscn")
 const GameOver := preload("res://src/UI/Screens/GameOver.tscn")
+const Player := preload("res://src/Actors/Player.tscn")
+
 const COIN_COUNT_MAX = 7
 
 var coin_counter := 0
@@ -21,7 +24,12 @@ func setup():
 	yield(get_tree().create_timer(.4), "timeout")
 	$TimerCoinSpawner.start()
 	$TimerGame.start()
-	
+	#set player
+	var p = Player.instance()
+	p.position.x = Global.screen_safe_max_x/2
+	p.position.y = Global.screen_safe_max_y/2
+	p.connect("died", self, "_on_Player_died")
+	Global.current_scene.add_child(p)
 	#debug screen_safe_max_x
 	var debug = "min_xy: %s max_x: %s max_y: %s "
 	$Debug/Label.text = debug % [Global.screen_safe_min_xy,
@@ -40,7 +48,7 @@ func spawn_position_safe_object(type = OBJECT_TYPE.COIN ):
 		if not o.get_has_detected():
 			match type:
 				OBJECT_TYPE.HAZARD:
-					pass
+					spawn_hazard(new_pos)
 				_:
 					spawn_coin(new_pos)
 			can_spawn_coin = true
@@ -49,6 +57,13 @@ func spawn_position_safe_object(type = OBJECT_TYPE.COIN ):
 
 func spawn_coin(pos: Vector2):
 	var c= Coin.instance()
+	c.position = pos
+	c.connect("picked", self, "_on_Coin_picked")
+	Global.current_scene.add_child(c)
+
+
+func spawn_hazard(pos: Vector2):
+	var c= HazardStatic.instance()
 	c.position = pos
 	c.connect("picked", self, "_on_Coin_picked")
 	Global.current_scene.add_child(c)
@@ -64,14 +79,15 @@ func game_over():
 	if score > Global.score_hi:
 		Global.score_hi = score
 		g.show_hi_score()
+	#TODO: calc and show play rate
 
 
 func _on_CoinSpawnerTimer_timeout():
 	if coin_counter < COIN_COUNT_MAX:
 		spawn_position_safe_object()
 		coin_counter += 1
-	if coin_counter == COIN_COUNT_MAX:
-		pass #spawn hazard
+		if score >= COIN_COUNT_MAX && score % COIN_COUNT_MAX == 0:
+			spawn_position_safe_object(OBJECT_TYPE.HAZARD)
 
 
 func _on_Coin_picked():
@@ -88,5 +104,9 @@ func _on_TimerGame_timeout():
 		$Hud.set_timer(game_timer)
 	else:
 		game_over()
+
+
+func _on_Player_died():
+	game_over()
 
 

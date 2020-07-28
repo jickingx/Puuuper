@@ -16,6 +16,8 @@ func _input(event):
 		return
 	if event.is_action_pressed('click'):
 		target = get_global_mouse_position()
+		$Sprites/EyeLeft.rotation = target.angle_to_point(position)
+		$Sprites/EyeRight.rotation = target.angle_to_point(position)
 
 
 func _physics_process(delta):
@@ -24,7 +26,7 @@ func _physics_process(delta):
 	if target == Vector2.ZERO:
 		return
 	#velocity = position.direction_to(target) * speed
-	velocity = position.direction_to(target) * speed * delta * 60
+	velocity = position.direction_to(target) * speed * 60 * delta
 	if position.distance_to(target) > 5:
 		velocity = move_and_slide(velocity)
 

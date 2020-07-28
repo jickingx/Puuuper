@@ -2,7 +2,8 @@
 
 [ext_resource path="res://assets/Fonts/font00.tres" type="DynamicFont" id=1]
 [ext_resource path="res://src/UI/Screens/Start.gd" type="Script" id=2]
-[ext_resource path="res://assets/Sounds/start.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/Audio/start.wav" type="AudioStream" id=3]
+
 
 [node name="Start" type="CanvasLayer"]
 script = ExtResource( 2 )

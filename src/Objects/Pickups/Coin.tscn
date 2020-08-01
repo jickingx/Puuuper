@@ -1,16 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/Objects/Pickups/Coin.gd" type="Script" id=1]
-[ext_resource path="res://assets/Art/coin.png" type="Texture" id=2]
+[ext_resource path="res://assets/Art/Sprites/pickup.png" type="Texture" id=2]
 [ext_resource path="res://assets/Audio/coin.wav" type="AudioStream" id=3]
-
+[ext_resource path="res://assets/Art/Sprites/pickup-pop.png" type="Texture" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 31.9073
 
 [sub_resource type="Animation" id=2]
 resource_name = "default"
-length = 0.4
+length = 0.3
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:scale")
@@ -19,10 +19,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.3 ),
+"transitions": PoolRealArray( 1, 2, 0.5 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.96, 0.96 ), Vector2( 1, 1 ) ]
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.52, 0.52 ), Vector2( 0.5, 0.5 ) ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -53,12 +53,53 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0.0196078, 0.0196078, 0.0196078, 0 ) ]
 }
 
+[sub_resource type="Animation" id=4]
+resource_name = "pop"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 0.5, 0.5 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.75, 0.75 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 2 ), ExtResource( 4 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 2 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
 [node name="Coin" type="Area2D" groups=[
 "coins",
 ]]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -68,6 +109,7 @@ shape = SubResource( 1 )
 autoplay = "default"
 anims/default = SubResource( 2 )
 anims/picked = SubResource( 3 )
+anims/pop = SubResource( 4 )
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 3 )

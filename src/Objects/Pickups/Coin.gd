@@ -11,7 +11,7 @@ func _on_Coin_body_entered(body):
 func die():
 	emit_signal("picked")
 	$CollisionShape2D.queue_free()
-	$AnimationPlayer.play("picked")
+	$AnimationPlayer.play("pop")
 	yield ($AnimationPlayer, "animation_finished")
 	$AudioStreamPlayer2D.play()
 	yield ($AudioStreamPlayer2D, "finished")

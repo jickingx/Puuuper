@@ -3,11 +3,18 @@
 [ext_resource path="res://src/Levels/Level00.gd" type="Script" id=2]
 [ext_resource path="res://src/UI/Hud.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/Audio/quake.wav" type="AudioStream" id=4]
-[ext_resource path="res://assets/Fonts/font00.tres" type="DynamicFont" id=5]
-
+[ext_resource path="res://assets/Themes/Fonts/font00.tres" type="DynamicFont" id=5]
 
 [node name="Level00" type="Node2D"]
 script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 1, 1, 1, 0.745098 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="TimerCoinSpawner" type="Timer" parent="."]
 wait_time = 0.4

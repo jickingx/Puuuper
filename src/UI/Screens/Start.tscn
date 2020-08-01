@@ -1,24 +1,52 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/Fonts/font00.tres" type="DynamicFont" id=1]
 [ext_resource path="res://src/UI/Screens/Start.gd" type="Script" id=2]
 [ext_resource path="res://assets/Audio/start.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/Themes/theme00.tres" type="Theme" id=4]
 
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Title:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 2, 2, 2, 0.5 ),
+"update": 0,
+"values": [ Vector2( 263, -219 ), Vector2( 263, 219 ), Vector2( 263, 289 ), Vector2( 263, 219 ), Vector2( 263, 219 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Title:rect_scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 0.6, 0.7, 0.8, 0.9 ),
+"transitions": PoolRealArray( 1, 2, 2, 2, 0.5 ),
+"update": 0,
+"values": [ Vector2( 4, 4 ), Vector2( 4, 4 ), Vector2( 4, 2 ), Vector2( 4, 4.64 ), Vector2( 4, 4 ) ]
+}
 
 [node name="Start" type="CanvasLayer"]
 script = ExtResource( 2 )
 next_scene = "res://src/Levels/Level00.tscn"
 
 [node name="Title" type="Label" parent="."]
-anchor_left = 0.335488
-anchor_top = 0.383945
-anchor_right = 0.651894
-anchor_bottom = 0.623945
-margin_right = -243.0
-margin_bottom = -108.0
+anchor_left = 0.237305
+anchor_top = 0.416667
+anchor_right = 0.743164
+anchor_bottom = 0.656669
+margin_left = 20.0
+margin_top = -31.0
+margin_right = -358.0
+margin_bottom = -139.002
 rect_scale = Vector2( 4, 4 )
-custom_fonts/font = ExtResource( 1 )
-text = "TITLE"
+theme = ExtResource( 4 )
+text = "PUUUPER"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": true
@@ -29,6 +57,7 @@ anchor_left = 0.408691
 anchor_top = 0.645833
 anchor_right = 0.591309
 anchor_bottom = 0.710833
+theme = ExtResource( 4 )
 text = "START"
 __meta__ = {
 "_edit_use_anchors_": true
@@ -36,4 +65,8 @@ __meta__ = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "default"
+anims/default = SubResource( 1 )
 [connection signal="button_up" from="Button" to="." method="_on_Button_button_up"]

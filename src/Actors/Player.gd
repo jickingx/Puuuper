@@ -2,13 +2,20 @@ extends KinematicBody2D
 signal died
 
 const ParticlesExplosion = preload("res://src/FX/Particles/Explosion.tscn")
-const SPEED_MAX = 999
+const SPEED_MAX = 666
 const ACCELERATION = 64
 export (int) var speed = 200
 
 var target:= Vector2.ZERO
 var velocity:= Vector2.ZERO
 var is_disabled:= false
+var state_machine
+
+
+func _ready():
+	$AnimationTree.active = true
+	state_machine = $AnimationTree.get("parameters/playback")
+	state_machine.travel("wobble")
 
 
 func _input(event):
@@ -29,6 +36,10 @@ func _physics_process(delta):
 	velocity = position.direction_to(target) * speed * 60 * delta
 	if position.distance_to(target) > 5:
 		velocity = move_and_slide(velocity)
+		state_machine.travel("move")
+	else:
+		state_machine.travel("idle")
+	
 
 
 func disable():

@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Jek Piso Arcade"
+config/name="PUUUPER"
 run/main_scene="res://src/Game.tscn"
 config/icon="res://icon.png"
 
